@@ -8,7 +8,7 @@ const cors = require('cors');
 mongoose.connect(process.env.MONGO_URI);
 
 app.use(cors({
-  origin: 'https://eco-goal-platform.vercel.app/',
+  origin: 'https://eco-goal-platform.vercel.app',
   credentials: true
 }));
 
@@ -18,7 +18,7 @@ app.options('*', cors());
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/habits', require('./routes/habits'));
 app.use('/api/logs', require('./routes/logs'));
-app.use("/api/contact", require('./routes/contact.js'));
+app.use("/api/contact", require('./routes/contact'));
 
 
 app.listen(process.env.PORT, () =>
