@@ -11,7 +11,7 @@ mongoose
   .catch(err => console.error('MongoDB connection error:', err))
 
 const corsOptions = {
-  origin: 'https://eco-goal-platform.vercel.app',
+  origin: 'https://eco-goal-platform.vercel.app/',
   credentials: true,
 }
 
