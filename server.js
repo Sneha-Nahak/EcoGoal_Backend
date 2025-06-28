@@ -1,11 +1,16 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const app = express();
 const cors = require('cors');
 
+const app = express();
 
-mongoose.connect(process.env.MONGO_URI);
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('MongoDB connected successfully'))
+.catch(err => console.error('MongoDB connection error:', err));
 
 app.use(cors({
   origin: 'https://eco-goal-platform.vercel.app',
@@ -18,9 +23,21 @@ app.options(/.*/, cors());
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/habits', require('./routes/habits'));
 app.use('/api/logs', require('./routes/logs'));
-app.use("/api/contact", require('./routes/contact'));
+app.use('/api/contact', require('./routes/contact'));
 
+app.get('/', (req, res) => {
+  res.send('The backend is running successfully');
+});
 
-app.listen(process.env.PORT, () =>
-  console.log(`Server running on http://localhost:${process.env.PORT}`)
-);
+app.use('*', (req, res) => {
+  res.redirect('/');
+});
+
+module.exports = app;
+
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () =>
+    console.log(`Server running locally on http://localhost:${PORT}`)
+  );
+}
